@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant browser
+    participant server
+    participant database
+    
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server->>database: Save note to database
+    activate database
+    database-->>server: Database response
+    deactivate database
+    server-->>browser: Redirect to https://studies.cs.helsinki.fi/exampleapp/notes
+    deactivate server
+    
+    Note right of browser: The browser requests for updated notes from the server
+    
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: Updated notes
+    deactivate server

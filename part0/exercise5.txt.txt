@@ -1,0 +1,16 @@
+graph LR
+    subgraph Browser
+        A[User opens the SPA URL]
+        A --> B[Browser sends GET request to server]
+        B --> C[Server responds with HTML]
+        C --> D[Browser displays HTML and JS]
+    end
+    subgraph Server
+        E[Server receives GET request from Browser]
+        E --> F[Server sends HTML with bundled JS]
+    end
+    subgraph Client-side
+        G[Client-side Router sends GET request for notes data]
+        G --> H[Server responds with notes data]
+        H --> I[Client-side Router updates URL and renders notes data]
+    end

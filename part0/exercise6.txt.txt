@@ -1,0 +1,7 @@
+graph LR
+    browser((Browser))
+    server((Server))
+    browser --(Sends POST request to /new_note)--> server
+    server --(Saves new note to database)--> database((Database))
+    server --(Returns JSON response to browser)--> browser
+    browser --(Updates the notes list on the page)--> browser
