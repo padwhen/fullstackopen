@@ -1,22 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Filter from './Components/Filter'
 import PersonForm from './Components/PersonForm'
 import Persons from './Components/Persons'
+import Service from './Services/notes'
 
 const App = () => {
-
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
-
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const handleNewName = event => {
     setNewName(event.target.value)
   }
-
   const [newNumber, setNewNumber] = useState('')
   const handleNewNumber = event => {
     setNewNumber(event.target.value)
@@ -25,7 +18,15 @@ const App = () => {
   const handleFilterName = event => {
       setFilterName(event.target.value)
   }
-  const filterPersons = persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase()))
+  useEffect( () => { 
+    Service
+    .getAll()
+    .then(response => {
+      console.log(response.data) 
+      setPersons(response.data)
+    })
+  }, []) 
+  const filterPersons = persons ? persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase())) : []
 
   const add = event => {
     event.preventDefault()
