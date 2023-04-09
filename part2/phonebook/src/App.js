@@ -20,19 +20,28 @@ const App = () => {
   }
   useEffect( () => { 
     Service
-    .getAll()
+    .getAll() 
     .then(response => {
-      console.log(response.data) 
-      setPersons(response.data)
+      setPersons(response)
     })
   }, []) 
   const filterPersons = persons ? persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase())) : []
 
+  const handleDelete = id => {
+    const person = persons.find(p => p.id === id)
+    if (window.confirm(`Delete ${person.name}?`)) {
+      Service
+      .remove(id)
+      .then(() => { setPersons(persons.filter(p => p.id !== id))
+      })
+    }
+  }
   const add = event => {
-    event.preventDefault()
+    event.preventDefault() 
     const nameExists = persons.some(person => person.name === newName)
-    if (nameExists) {
-      alert (`${newName} is already added to the phonebook`)
+    const numberExists = persons.some(person => person.number === newNumber)
+    if (nameExists && numberExists) {
+      alert (`${newName} and ${numberExists} are already added to the phonebook`)
     } else {
       const nameObject = {name: newName, id: persons.length + 1, number: newNumber}
       setPersons(persons.concat(nameObject))
@@ -47,7 +56,7 @@ const App = () => {
       <Filter filterName={filterName} handleFilterName={handleFilterName}/>
       <PersonForm add={add} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} handleNewName={handleNewName} handleNewNumber={handleNewNumber} persons={persons} setPersons={setPersons} />
       <h2>Numbers</h2>
-      <Persons persons={filterPersons} />
+      <Persons persons={filterPersons} handleDelete={handleDelete} />
     </div>
   )
 }
