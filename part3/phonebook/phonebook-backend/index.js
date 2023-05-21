@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+app.use(express.static('build'))
 app.use(express.json())
 const cors = require('cors')
 app.use(cors())
@@ -92,6 +93,8 @@ app.post('/api/persons', (request, response) => {
         response.json(persons)
     }
 })
+
+
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: "unknown endpoint" });
 };
