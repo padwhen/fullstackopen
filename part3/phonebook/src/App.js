@@ -23,7 +23,9 @@ const App = () => {
     Service
     .getAll() 
     .then(response => {
-      setPersons(response)
+      // setPersons(response)
+      const personsData = response.data;
+      setPersons(personsData);
     })
     .catch(error => console.log('Error'))
   }, []) 
