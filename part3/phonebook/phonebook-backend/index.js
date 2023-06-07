@@ -47,6 +47,7 @@ app.use(morgan(":method :url :status :res[content-length] - :response-time ms :t
 // })
 
 
+
 app.get('/api/people/:id', (request, response) => {
     Person.findById(request.params.id).then(note => {
         response.json(note)
@@ -96,6 +97,12 @@ app.get('/api/people', (request, response) => {
 //     response.send(`<pre>${message}</pre>`)
 // })
 
+app.get("/api/people", (request, response) => {
+    Person.find({}).then((person) => {
+      response.json(person);
+    });
+  });
+  
 app.get('/info', (request, response) => {
     Person.countDocument({})
         .then(count => {
@@ -141,25 +148,30 @@ app.post('/api/people', (request, response) => {
             error: 'the number is missing'
         })
     }
-    if (body.content === undefined) {
-        return response.status(400).json({
-            error: 'content missing'
-        })
-    }
-    const nameExists = Person.some(person => person.name === body.name)
-    if (nameExists) {
-        return response.status(404).json({
-            error: 'name must be unique'
-        })
-    } else {
-        const person = new Person({
-            "name": body.name,
-            "number": body.number,
-        })
-        person.save().then(savedPerson => {
-            response.json(savedPerson)
-        })
-    }
+    // if (body.content === undefined) {
+    //     return response.status(400).json({
+    //         error: 'content missing'
+    //     })
+    // }
+    Person.findOne({ name: body.name })
+    .then((person) => {
+        const nameExists = person !== null
+        if (nameExists) {
+            return response.status(404).json({
+                error: 'name must be unique'
+            })
+        } else {
+            const person = new Person({
+                "name": body.name,
+                "number": body.number,
+            })
+            person.save().then(savedPerson => {
+                response.json(savedPerson)
+            })
+        }
+    })
+    .catch((error) => console.log('Error', error))
+    
 })
 
 

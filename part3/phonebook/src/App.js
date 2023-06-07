@@ -47,7 +47,7 @@ const App = () => {
     const numberExists = persons.some(person => person.number === newNumber)
     if (nameExists && numberExists) {
       alert (`${newName} and ${newNumber } are already added to the phonebook`)
-    } else if (nameExists && numberExists == false) {
+    } else if (nameExists && !numberExists) {
       const confirm = window.confirm(`${newName} is already added to the phonebook, do you want to replace the old number?`)
       if (confirm) {
         const updatePerson = {...person, number: newNumber}
@@ -57,7 +57,7 @@ const App = () => {
           setPersons(persons.map(p => p.id !== person.id ? p : response))
           setNewName('')
           setNewNumber('')
-        })
+        })        
       } else {
         alert (`This name already has a phone number. Try another one`)
         setNewName('')
