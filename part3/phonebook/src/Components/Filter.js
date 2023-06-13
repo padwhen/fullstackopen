@@ -1,10 +1,11 @@
-import React, {useState} from "react"
-
-const Filter = ({filterName, handleFilterName}) => {
+const Filter = ({ filter, setFilter}) => {
     return (
-        <div>
-            filter shown with: <input value={filterName} onChange={handleFilterName} />
-        </div>
+      <div>
+        filter shown with
+        <input value={filter} onChange={({ target }) => setFilter(target.value)} />
+      </div>
     )
-}
-export default Filter
+  }
+  
+  
+  export default Filter
