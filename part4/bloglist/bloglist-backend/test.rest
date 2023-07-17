@@ -1,0 +1,12 @@
+GET http://localhost:4000/api/blogs
+
+###
+POST http://localhost:4000/api/blogs HTTP/1.1 
+Content-Type: application/json
+
+{
+    "title": "Harry Potter",
+    "author": "J.K. Rowling",
+    "url": "https://www.wizardingworld.com/",
+    "likes": 999
+}
