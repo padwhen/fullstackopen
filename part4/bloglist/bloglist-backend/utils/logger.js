@@ -8,4 +8,8 @@ const error = (...params) => {
 
 module.exports = {
     info, error
+<<<<<<< HEAD
 } 
+=======
+}
+>>>>>>> 06b54446d58c7204a26a2d6e1a3a255afd384e0d
