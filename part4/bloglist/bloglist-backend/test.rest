@@ -1,0 +1,12 @@
+POST http://localhost:4000/api/blogs/
+Content-Type: application/json
+
+{
+    "title": "ABC", 
+    "url": "google.com", 
+    "author": "J.K. Rowling", 
+    "likes": 999
+}
+
+### 
+GET http://localhost:3003/api/blogs/
