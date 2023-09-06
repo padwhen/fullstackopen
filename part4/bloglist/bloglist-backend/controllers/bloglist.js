@@ -1,7 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-<<<<<<< HEAD
 blogsRouter.get('/', (request, response, next) => {
     Blog
     .find({})
@@ -11,31 +10,24 @@ blogsRouter.get('/', (request, response, next) => {
     .catch(error => next(error))
 })
 
-blogsRouter.post('/', (request, response, next) => {    
-    const blog = new Blog(request.body) 
-=======
-blogsRouter.get('/api/blogs', (request, response) => {
-    Blog
-    .find({})
-    .then(blogs => {
-        response.json(blogs)
+blogsRouter.post('/', async (request, response, next) => {  
+    const body = request.body  
+    const {title, author, url, likes} = body
+    if (!title || !url) {
+        return response.status(404).json({error: 'Title or URL or both missing'})
+    } 
+    const blog = new Blog({
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        likes: body.likes || 0
     })
-})
-
-blogsRouter.post('/api/blogs', (request, response) => {
-    const blog = new Blog(request.body)
->>>>>>> 06b54446d58c7204a26a2d6e1a3a255afd384e0d
-    blog
-    .save()
-    .then(result => {
-        response.status(201).json(result)
-<<<<<<< HEAD
-    }) 
-    .catch(error => next(error))     
+    try {
+        const savedBlog = await blog.save()
+        response.status(201).json(savedBlog)
+    } catch (exception) {
+        next(exception)
+    }
 })      
-=======
-    })
-})
->>>>>>> 06b54446d58c7204a26a2d6e1a3a255afd384e0d
 
 module.exports = blogsRouter

@@ -1,16 +1,12 @@
 {
-<<<<<<< HEAD
   "scripts": {
-    "start": "node index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "eslint .",
-    "test": "jest --verbose"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
-=======
-  "dependencies": {
-    "axios": "^1.4.0",
->>>>>>> 06b54446d58c7204a26a2d6e1a3a255afd384e0d
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -18,16 +14,14 @@
     "mongoose": "^7.3.4"
   },
   "devDependencies": {
-<<<<<<< HEAD
+    "cross-env": "^7.0.3",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.32.2",
     "jest": "^29.6.1",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
   },
   "jest": {
     "testEnvironment": "node"
-=======
-    "nodemon": "^3.0.1"
->>>>>>> 06b54446d58c7204a26a2d6e1a3a255afd384e0d
   }
 }
