@@ -1,1 +1,0 @@
-{"version":3,"file":"static/css/main.60a3bda4.css","mappings":"AAAA,GACI,SAAU,CAEV,cAAe,CADf,eAEF","sources":["index.css"],"sourcesContent":["li {\r\n    color: red;\r\n    padding-top: 3px;\r\n    font-size: 15px;\r\n  }"],"names":[],"sourceRoot":""}
