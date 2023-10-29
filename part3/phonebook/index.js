@@ -53,16 +53,27 @@ app.get('/api/persons/:id', (request, response) => {
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   phonebook = phonebook.filter(person => person.id !== id)
-  response.status(204).json(error: 'name must be uin')
+  response.status(204).end()
 })
 
 app.post('/api/persons', (request, response) => {
-  const person = request.body;
-  if (!person.name || !person.number) {
-    response.status(204).
-  }
+  const body = request.body;
   const id = Math.floor(Math.random() * 1000000)
-  phonebook = phonebook.concat(person)
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: id
+  }
+  if (!person.name) {
+    response.status(400).json({ error: 'name is missing'})
+  }
+  if (phonebook.map(existingPerson => existingPerson.name === person.name)) {
+    response.status(404).json({ error: 'name must be unique'})
+  }
+  if (!person.number) {
+    response.status(404).json({ error: 'number is missing'})
+  }
+  phonebook = phonebook.concat({id, ...person})
   response.json(phonebook)
 })
 
