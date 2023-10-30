@@ -1,7 +1,11 @@
+require('dotenv').config()
+
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
+const Person = require('./models/person')
 
 app.use(cors())
 app.use(express.json())
@@ -43,7 +47,9 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(phonebook)
+    Person.find({}).then((persons) => {
+      response.json(persons)
+    })
 })
 
 app.get('/info', (request, response) => {
@@ -69,28 +75,31 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const body = request.body;
-  const id = Math.floor(Math.random() * 1000000)
-  const person = {
-    name: body.name,
-    number: body.number,
-    id: id
+  const body = request.body
+  if (!body.name || !body.number) {
+    return response.status(400).json({ error: 'Name and number are required'})
   }
-  if (!person.name) {
-    response.status(400).json({ error: 'name is missing'})
-  }
-  if (phonebook.map(existingPerson => existingPerson.name === person.name)) {
-    response.status(404).json({ error: 'name must be unique'})
-  }
-  if (!person.number) {
-    response.status(404).json({ error: 'number is missing'})
-  }
-  phonebook = phonebook.concat({id, ...person})
-  response.json(phonebook)
+  Person.findOne({name: body.name})
+  .then((existingPerson) => {
+    if (existingPerson) {
+      existingPerson.number = body.number
+      existingPerson.save().then((updatedPerson) => {
+        response.json(updatedPerson)
+      })
+    } else {
+      const person = new Person({
+        name: body.name,
+        number: body.number
+      })
+      person.save().then((savedPerson) => {
+        response.json(savedPerson)
+      })
+    }
+  })
 })
 
 
-const PORT = 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(PORT)
 })
