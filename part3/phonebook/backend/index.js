@@ -77,10 +77,21 @@ app.delete('/api/persons/:id', (request, response) => {
   .catch(error => response.status(404).send({error: 'invalid id'}))
 })
 
+function isValidPhoneNumber(phoneNumber) {
+  const phoneRegex = /^(0\d-\d{6,7})$/
+  return phoneRegex.test(phoneNumber)
+}
+
 app.post('/api/persons', (request, response) => {
   const body = request.body
   if (!body.name || !body.number) {
     return response.status(400).json({ error: 'Name and number are required'})
+  }
+  if (body.name.length < 3) {
+    return response.status(400).json({ error: 'Name must be at least 3 characters long'})
+  }
+  if (!isValidPhoneNumber(body.number)) {
+    return response.status(400).json({ error: 'Invalid phone number format'})
   }
   Person.findOne({name: body.name})
   .then((existingPerson) => {
@@ -101,7 +112,7 @@ app.post('/api/persons', (request, response) => {
   })
 })
 
-app.put('/api/notes:id', (request, response, next) => {
+app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
   const person = {
     name: body.name,

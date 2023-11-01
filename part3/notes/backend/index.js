@@ -91,9 +91,22 @@ const errorHandler = (error, request, response, next) => {
   console.log(error.message)
   if(error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id'})
+  } else if (error.name === 'Validation Error') {
+    return response.status(400).json({ error: error.message })
   }
   next(error)
 }
+
+app.put('/api/notes/:id', (request, response, next) => {
+  const { content, important } = request.body
+  Note.findByIdAndUpdate(
+    request.params.id, {content: important}, {new: true, runValidators: true, context: 'query'}
+  )
+  .then(updatedNote => {
+    response.json(updatedNote)
+  })
+  .catch(error => next(error))
+})
 
 app.use(errorHandler)
 

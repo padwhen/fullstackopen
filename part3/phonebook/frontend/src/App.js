@@ -7,6 +7,7 @@ import Service from './Services/notes'
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
   const handleNewName = event => {
     setNewName(event.target.value)
   }
@@ -24,7 +25,7 @@ const App = () => {
     .then(response => {
       setPersons(response)
     })
-    .catch(error => console.log('Error'))
+    .catch(error => setErrorMessage("Error fetching data from the server"))
   }, []) 
   const filterPersons = persons ? persons.filter(person => person.name.toLowerCase().includes(filterName.toLowerCase())) : []
 
@@ -43,7 +44,8 @@ const App = () => {
     const nameExists = persons.some(person => person.name === newName)
     const numberExists = persons.some(person => person.number === newNumber)
     if (nameExists && numberExists) {
-      alert (`${newName} and ${newNumber } are already added to the phonebook`)
+      setErrorMessage(`${newName} and ${newNumber} are already added to the phonebook`)
+      return;
     } else if (nameExists && numberExists == false) {
       const confirm = window.confirm(`${newName} is already added to the phonebook, do you want to replace the old number?`)
       if (confirm) {
@@ -56,7 +58,7 @@ const App = () => {
           setNewNumber('')
         })
       } else {
-        alert (`This name already has a phone number. Try another one`)
+        setErrorMessage('This name already has a phone number. Try again')
         setNewName('')
         setNewNumber('')
       }
@@ -76,6 +78,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {errorMessage && (
+        <div style={{color: 'red'}}>{errorMessage}</div>
+      )}
       <Filter filterName={filterName} handleFilterName={handleFilterName}/>
       <PersonForm add={add} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} handleNewName={handleNewName} handleNewNumber={handleNewNumber} persons={persons} setPersons={setPersons} />
       <h2>Numbers</h2>
