@@ -1,8 +1,0 @@
-POST http://localhost:3001/api/notes HTTP/1.1
-Content-Type: application/json
-
-{
-  "content": "Like user id",
-  "important": true,
-  "userId": "654e8a92dfe76368d6f23426"
-}

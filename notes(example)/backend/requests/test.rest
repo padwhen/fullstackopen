@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/notes HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBoYXRuZ3V5ZW4iLCJpZCI6IjY1NGVhMDc2MTM4NTBhY2NiYzczNjJiNyIsImlhdCI6MTY5OTY1MzIzM30.kx5LumBSgx_AFLuW8SerTmWMZqoMdn9WqmHmT12t2Nc
+
+{
+  "content": "ahihi",
+  "important": true
+}
