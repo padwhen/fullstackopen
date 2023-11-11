@@ -3,7 +3,8 @@ const supertest = require('supertest')
 const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
-
+const bcrypt = require('bcrypt')
+const User = require('../models/user')
 const Blog = require('../models/blog')
 
 beforeEach(async () => {
@@ -92,5 +93,64 @@ describe('PUT /api/blogs', () => {
         expect(updatedBlog.title).toBe(blogToUpdate.title);
         expect(updatedBlog.author).toBe(blogToUpdate.author);
         expect(updatedBlog.url).toBe(blogToUpdate.url);
+    })
+})
+
+describe('when there is initially one user in db', () => {
+    beforeEach(async () => {
+        await User.deleteMany({})
+        const passwordHash = await bcrypt.hash('sekret', 10)
+        const user = new User({username: 'root', passwordHash})
+        await user.save()
+    })
+    test('creation succeeds with a fresh username', async () => {
+        const usersAtStart = await helper.usersInDb()
+        const newUser = {
+            username: 'padwehn',
+            name: 'Phat Nguyen',
+            password: '123456'
+        }
+        await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+        const usernames = usersAtEnd.map(user => user.username)
+        expect(usernames).toContain(newUser.username)
+    })
+})
+
+describe('user creation endpoint', () => {
+    beforeEach(async () => {
+        await User.deleteMany({})
+        const passwordHash = await bcrypt.hash('sekret', 10)
+        const user = new User({ username: 'root', passwordHash })
+        await user.save()
+    })
+    test('creating a user with a duplicate username, 400 status code + error message', async () => {
+        const usersAtStart = await helper.usersInDb()
+        const newUser = { username: 'root', name: 'Test', password: 'moikka'}
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(result.body.error).toContain('expected `username` to be unique')
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtEnd).toEqual(usersAtStart)
+    })
+    test('creating a user with a too short password should return 400 status code + error message', async () => {
+        const usersAtStart = await helper.usersInDb()
+        const newUser = { username: 'abcsya', name: 'Tezt', password: 'ab'}
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(result.body.error).toContain('password is missing or too short')
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtEnd).toEqual(usersAtStart)
     })
 })
