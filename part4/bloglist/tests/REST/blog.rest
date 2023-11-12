@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imprcm93bGluZyIsImlkIjoiNjU0ZmRmNzhmYTFhZGJlNWQwMTU4ZDg5IiwiaWF0IjoxNjk5NzM5MDU5fQ.Bixx6_7lp_z_57QimDikc1MquItOgJVk-rtFj7Y74Ik
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imprcm93bGluZyIsImlkIjoiNjU0ZmRmNzhmYTFhZGJlNWQwMTU4ZDg5IiwiaWF0IjoxNjk5NzM5MDU5fQ.Bixx6_7lp_z_57QimDikc1MquItOgJVk-rtFj7Y74Ik
 
 {
-    "url": "lru",
-    "title": "eltit",
+    "url": "lsu",
+    "title": "assfnkas",
     "likes": 19999,
-    "author": "Just Kidding ROwling"
+    "author": "Just fkasf ROwling"
 }
