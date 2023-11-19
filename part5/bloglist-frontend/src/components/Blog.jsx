@@ -35,15 +35,15 @@ const Blog = ({ blog, user, updateBlog }) => {
   return (
   <div style={blogStyle}>
     <div>
-      {blog.title}
+      {blog.title} {blog.author}
       <button onClick={toggleDetails}>
       {showDetails ? 'Hide' : 'View'}
       </button>
     </div>
     {showDetails && (
-      <div>
-        <p>{blog.url} {blog.author}</p>
-        <p>{blog.likes}<button onClick={handleLike}>like</button>
+      <div className="blog">
+        <p className="url">{blog.url}</p>
+        <p className="likes">{blog.likes}<button onClick={handleLike}>like</button>
           <button onClick={handleDelete}>delete</button>
         </p>
         <p>{blog.user.name}</p>
