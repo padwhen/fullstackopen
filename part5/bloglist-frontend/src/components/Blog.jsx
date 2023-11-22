@@ -3,6 +3,7 @@ import blogService from '../services/blogs'
 
 const Blog = ({ blog, user, updateBlog }) => {
   const [showDetails, setShowDetails] = useState(false)
+  const [successMessage, setSuccessMessage] = useState(null)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -27,6 +28,7 @@ const Blog = ({ blog, user, updateBlog }) => {
       try {
         await blogService.remove(blog.id)
         updateBlog()
+        setSuccessMessage(`Blog ${blog.title} deleted successfully`)
       } catch (error) {
         console.error(`Error updating blog: ${error.message}`)
       }
@@ -34,7 +36,7 @@ const Blog = ({ blog, user, updateBlog }) => {
   }
   return (
   <div style={blogStyle}>
-    <div>
+    <div className="blog">
       {blog.title} {blog.author}
       <button onClick={toggleDetails}>
       {showDetails ? 'Hide' : 'View'}
