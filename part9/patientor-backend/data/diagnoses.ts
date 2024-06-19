@@ -1,4 +1,6 @@
-const data = [
+import { DiagnoseEntry } from '../src/types';
+
+const data: DiagnoseEntry[] = [
     {
       "code": "M24.2",
       "name": "Disorder of ligament",

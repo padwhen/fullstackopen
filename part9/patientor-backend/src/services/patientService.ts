@@ -17,7 +17,8 @@ const addPatient = (entry: NewPatient): PatientEntry => {
     const id = uuid()
     const newPatient = {
         id,
-        ...entry
+        ...entry,
+        entries: []
     }
     patients.push(newPatient)
     return newPatient
@@ -25,16 +26,14 @@ const addPatient = (entry: NewPatient): PatientEntry => {
 
 const patientsWithEntries: Patient[] = patients.map(patient => ({
     ...patient,
-    entries: []
+    entries: patient.entries
 }));
 
 const getPatientById = (id: string): Patient | undefined => {
     const foundPatient = patientsWithEntries.find(patient => patient.id === id);
-    if (foundPatient) {
-        return foundPatient;
-    }
-    return undefined;
+    return foundPatient;
 };
+
 
 
 export default {
